@@ -6,15 +6,15 @@ import melogtool
 def step_impl(context):
     context.options_file = "options.txt"
     melogtool.import_options(context.options_file)
-    assert melogtool.should_output_csv is False
+    assert melogtool.option_should_output_csv is False
 
 @when(u'The log parser is called as a function')
 def step_impl(context):
-    melogtool.parse_logs(context.options_file)
+    melogtool.parse_logs(context.logfile, context.options_file)
 
 @when(u'The log parser has completed parsing a log')
 def step_impl(context):
-    context.parsed_values = melogtool.parse_logs(context.options_file)
+    context.parsed_values = melogtool.parse_logs(context.logfile, context.options_file)
     assert melogtool.quit_condition is not True
 
 
@@ -36,7 +36,7 @@ def step_impl(context):
 
 @when(u'The log parser runs')
 def step_impl(context):
-    context.parsed_values = melogtool.parse_logs(context.options_file)
+    context.parsed_values = melogtool.parse_logs(context.logfile, context.options_file)
     assert melogtool.quit_condition is not True
 
 @then(u'The output will be generated correctly')
@@ -56,7 +56,7 @@ def step_impl(context):
     melogtool.import_options(context.options_file)
     assert melogtool.option_file_name is None
 
-@then(u'The output filename should be the current timestamp')
+@then(u'The output filename should be a timestamp')
 def step_impl(context):
     raise NotImplementedError(u'STEP: Then The output filename should be the current timestamp')
 
@@ -86,7 +86,6 @@ def step_impl(context):
 
 @then(u'The returned values should contain data from the desired measurement points')
 def step_impl(context):
-    melogtool.parse_logs("options.txt")
     raise NotImplementedError(u'STEP: Then The returned values should contain data from the desired measurement points.')
 
 @given(u'An options file is provided by argument to the log parser with all options present in the file')
@@ -128,5 +127,18 @@ def step_impl(context):
 def step_impl(context):
     assert melogtool.quit_condition is True
 
+@given(u'An options file exists with contents recognizable by the log parser')
+def step_impl(context):
+    context.options_file = "options.txt"
+    melogtool.import_options(context.options_file)
+
+@given(u'An options file exists with contents unrecognizable by the log parser')
+def step_impl(context):
+    context.options_file = "MeasOutputLogsExample.csv"
+    melogtool.import_options(context.options_file)
+
+@then(u'The log parser should inform the user that the file was not found')
+def step_impl(context):
+    assert melogtool.file_not_found_error is True
 
 

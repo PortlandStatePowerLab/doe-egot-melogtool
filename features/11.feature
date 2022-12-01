@@ -7,7 +7,7 @@ Scenario: Output file given a name and timestamp
 	Given The options file indicates a specific name should be used for the output file
 	And  The options file indicates the timestamp should be appended to the filename
 	When The log parser runs
-	Then The output filename should be what was written in the options file with the current timestamp appended
+	Then The output filename should be what was written in the options file with a timestamp appended
 
 Scenario: Output file given a name and no timestamp
 	Given The options file indicates a specific name should be used for the output file
@@ -19,4 +19,4 @@ Scenario: Output file given a name and no timestamp
 Scenario: Output file not given a name
 	Given The options file does not indicate a specific name for the output file
 	When The log parser runs
-	Then The output filename should be the current timestamp
+	Then The output filename should be a timestamp
