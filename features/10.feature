@@ -9,7 +9,7 @@ Scenario: All options used
 	When The log parser runs
 	Then The output will be generated correctly
 
-@sean
+@choppingblock
 Scenario: Not all options used
 	Given An options file is provided by argument to the log parser with some options not present in the file
 	When The log parser runs

@@ -1,0 +1,16 @@
+<!--This file should not contain all options-->
+<options>
+    <log_filepath>MeasOutputLogsExample.csv</log_filepath>
+    <should_output_csv>False</should_output_csv>
+    <include_timestamp>True</include_timestamp>
+    <use_file_name>False</use_file_name>
+    <output_file_name>File_Name</output_file_name>
+    <start_time>2019-10-02 18:31:58</start_time>
+    <end_time>2019-10-02 18:32:03</end_time>
+    <use_measurement_points>True</use_measurement_points>
+    <measurement_points>[PowerElectronicsConnection_BatteryUnit_DER_RWHDERS_Test_6332_Battery, PowerElectronicsConnection_BatteryUnit_DER_Association_Test_6343_Battery.1]</measurement_points>
+    <use_search_function>False</use_search_function>
+    <values_to_search>[1,2]</values_to_search>
+    <use_key_filtering>False</use_key_filtering>
+    <keys_to_include>['Magnitude', 'Angle']</keys_to_include>
+</options>
