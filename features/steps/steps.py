@@ -61,15 +61,16 @@ def step_impl(context):
     raise NotImplementedError(u'STEP: Then The output filename should be the current timestamp')
 
 
-@given(u'An input log file is provided to the log parser in the proper format')
+@when(u'The log parser runs using an input log file in the proper format')
 def step_impl(context):
-    melogtool.import_me_log("MeasOutputLogsExample.csv")
+    context.options_file = "options.txt"
+    melogtool.parse_logs(context.logfile, context.options_file)
 
 
-@given(u'An input log file is provided to the log parser in an unusable format')
+@when(u'The log parser runs using an input log file in an improper format')
 def step_impl(context):
-    melogtool.import_me_log("options.txt")
-
+    context.options_file = "options.txt"
+    melogtool.parse_logs(context.options_file, context.options_file)
 
 @then(u'The user is notified that the input log can not be used')
 def step_impl(context):
@@ -82,7 +83,7 @@ def step_impl(context):
 @given(u'The input options file is set to produce values based on measurement points')
 def step_impl(context):
     melogtool.import_options("options.txt")
-    assert melogtool.measurement_points_to_include is not None
+    assert melogtool.option_measurement_points is not None
 
 @then(u'The returned values should contain data from the desired measurement points')
 def step_impl(context):

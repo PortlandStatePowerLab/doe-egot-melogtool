@@ -6,4 +6,6 @@ file_name = "File Name"
 start_time = "123456789"
 end_time = "123456789"
 measurement_points = ['Point_A', 'Point_B']
-values_to_include = ['Magnitude', 'Angle']
+keys_to_include = ['Magnitude', 'Angle']
+use_search_function = False
+values_to_search = [1,2]
