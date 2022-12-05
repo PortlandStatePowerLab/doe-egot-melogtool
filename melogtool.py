@@ -1,16 +1,15 @@
 import xml.etree.ElementTree
 import xml.etree.ElementTree as ET
+
+import pandas.errors
 import xmltodict
 import time
-# import numpy as np
+import numpy as np
 import pandas as pd
 
 
 
 class MELogTool:
-    """
-
-    """
     def __init__(self):
         self.log_filepath = None
         self.quit_condition = False
@@ -69,7 +68,13 @@ class MELogTool:
         if log_filename_arg is not None:
             self.log_filepath = log_filename_arg
         # Read logs
-        log_df = pd.read_csv(self.log_filepath)
+        try:
+            log_df = pd.read_csv(self.log_filepath)
+        except pandas.errors.ParserError:
+            self.quit_condition = True
+            self.log_import_error = True
+            print("Error: Imported ME logs are corrupt, or in an unrecognizable format. Quitting...")
+            quit()
         # Filter time
         if (self.option_start_time != None) and (self.option_end_time != None):
             timeindex_dict = {}
@@ -105,7 +110,34 @@ class MELogTool:
             print("No columns filtered. Using all measurement points.")
             column_filtered_df = time_filtered_df
 
-        return column_filtered_df
+
+        output_df = column_filtered_df["Timestamp"]
+        flatten_df = column_filtered_df.drop("Timestamp", axis=1)
+        for column_name, column_series in flatten_df.items():
+            for cell_index, cell_contents in column_series.items():
+                cell_contents = eval(cell_contents)
+                filtered_dict = {}
+                if self.option_keys_to_include is not None:
+                    for key, value in cell_contents.items():
+                        if key in self.option_keys_to_include:
+                            filtered_dict[key] = value
+                    flatten_df.at[cell_index, column_name] = filtered_dict
+        new_names_dict = {}
+        for header_name, column_series in flatten_df.items():
+            for key, value in column_series[1].items():
+                new_column_name = header_name + "[" + str(key) + "]"
+                new_names_dict[new_column_name] = {header_name: key}
+        for new_names, column_dicts in new_names_dict.items():
+            new_column_data = list([])
+            for keys, values in column_dicts.items():
+                new_column_dict_list = flatten_df[keys].values.tolist()
+                for i in new_column_dict_list:
+                    new_column_data.append(i[values])
+                series_to_append = pd.Series(new_column_data, name=new_names)
+                series_to_append.index = np.arange(1, len(series_to_append) + 1)
+                output_df = pd.merge(output_df, series_to_append, left_index=True, right_index=True)
+                # print(output_df)
+        return output_df
 
 melogtool = MELogTool()
 melogtool.parse_logs("options.xml")

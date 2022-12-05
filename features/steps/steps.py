@@ -1,6 +1,8 @@
 from behave import *
 from os import path
 import melogtool as melt
+import time
+import datetime
 melogtool = melt.MELogTool()
 
 @given(u'The log parser is configured to output a direct value')
@@ -24,8 +26,8 @@ def step_impl(context):
     try:
         context.parsed_values = melogtool.parse_logs(context.options_file, context.logfile)
     except SystemExit:
-        assert True is False
-    assert melogtool.quit_condition is not True
+        assert melogtool.quit_condition is not True
+        pass
 
 @then(u'A value should be returned')
 def step_impl(context):
@@ -49,7 +51,7 @@ def step_impl(context):
     try:
         context.parsed_values = melogtool.parse_logs(context.options_file, context.logfile)
     except SystemExit:
-        assert melogtool.quit_condition is not True
+        pass
 
 
 @then(u'The output will be generated correctly')
@@ -67,30 +69,33 @@ def step_impl(context):
 def step_impl(context):
     context.options_file = "options2.xml"
     melogtool.import_options(context.options_file)
-    assert melogtool.option_output_file_name is None
 
 
 @then(u'The output filename should be a timestamp')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Then The output filename should be the current timestamp')
+    assert type(time.mktime(datetime.datetime.strptime(melogtool.option_output_file_name,
+                                                "%Y%m%d_%H%M%S").timetuple())) is float
 
 
 @when(u'The log parser runs using an input log file in the proper format')
 def step_impl(context):
     context.options_file = "options.xml"
     try:
-        melogtool.parse_logs(context.options_file, context.logfile)
+        context.parsed_values = melogtool.parse_logs(context.options_file, context.logfile)
     except SystemExit:
         assert True is False
     assert melogtool.quit_condition is not True
 
+
 @when(u'The log parser runs using an input log file in an improper format')
 def step_impl(context):
+    context.logfile = "options.xml"
     context.options_file = "options.xml"
     try:
         melogtool.parse_logs(context.options_file, context.logfile)
     except SystemExit:
-        assert melogtool.quit_condition is True
+        pass
+
 
 @then(u'The user is notified that the input log can not be used')
 def step_impl(context):
@@ -110,9 +115,10 @@ def step_impl(context):
 
 @then(u'The returned values should contain data from the desired measurement points')
 def step_impl(context):
-    raise NotImplementedError(
-        u'STEP: Then The returned values should contain data from the desired measurement points.')
-
+    #  Note: this test assumes no corner cases, which will arise when search is implemented
+        print(len(melogtool.option_measurement_points))
+        print(len(context.parsed_values))
+        assert len(melogtool.option_measurement_points)*len(melogtool.option_keys_to_include) == len(context.parsed_values)-1
 
 @given(u'An options file is provided by argument to the log parser with all options present in the file')
 def step_impl(context):

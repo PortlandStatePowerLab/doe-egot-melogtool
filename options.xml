@@ -11,6 +11,6 @@
     <measurement_points>[PowerElectronicsConnection_BatteryUnit_DER_RWHDERS_Test_6332_Battery, PowerElectronicsConnection_BatteryUnit_DER_Association_Test_6343_Battery.1]</measurement_points>
     <use_search_function>False</use_search_function>
     <values_to_search>[1,2]</values_to_search>
-    <use_key_filtering>False</use_key_filtering>
-    <keys_to_include>['Magnitude', 'Angle']</keys_to_include>
+    <use_key_filtering>True</use_key_filtering>
+    <keys_to_include>[magnitude, angle]</keys_to_include>
 </options>
