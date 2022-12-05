@@ -138,6 +138,3 @@ class MELogTool:
                 output_df = pd.merge(output_df, series_to_append, left_index=True, right_index=True)
                 # print(output_df)
         return output_df
-
-melogtool = MELogTool()
-melogtool.parse_logs("options.xml")
