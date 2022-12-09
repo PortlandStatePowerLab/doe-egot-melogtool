@@ -8,9 +8,10 @@
     <start_time>2019-10-02 18:31:58</start_time>
     <end_time>2019-10-02 18:32:03</end_time>
     <use_measurement_points>True</use_measurement_points>
-    <measurement_points>[PowerElectronicsConnection_BatteryUnit_DER_RWHDERS_Test_6332_Battery, PowerElectronicsConnection_BatteryUnit_DER_Association_Test_6343_Battery.1]</measurement_points>
+    <measurement_points>[PowerElectronicsConnection_BatteryUnit_DER_Association_Test_6322_Battery.2
+, PowerElectronicsConnection_BatteryUnit_DER_Association_Test_6321_Battery ]</measurement_points>
     <use_search_function>False</use_search_function>
     <values_to_search>[1,2]</values_to_search>
     <use_key_filtering>True</use_key_filtering>
-    <keys_to_include>[magnitude, angle]</keys_to_include>
+    <keys_to_include>[magnitude, angle, Unique ID]</keys_to_include>
 </options>
